@@ -1,0 +1,82 @@
+/*Select first 20 rows from stream table */
+-- SELECT *
+-- FROM stream
+-- LIMIT 20;
+
+/*Select first 20 rows from chat table */
+-- SELECT *
+-- FROM chat
+-- LIMIT 20;
+
+/*Select unique games from stream table*/
+-- SELECT DISTINCT(game)
+-- FROM stream;
+
+/*Select unique channels from stream table*/
+-- SELECT DISTINCT(channel)
+-- FROM stream;
+
+/*Select most popular games & number of viewers streaming each game*/
+-- SELECT game, COUNT(device_id) as 'Number of Viewers'
+-- FROM stream
+-- WHERE game NOT NULL AND device_id NOT NULL
+-- GROUP BY game;
+
+/*Select list of countries & number of viewers in each country*/
+-- SELECT country, COUNT(device_id) as 'Number of Viewers'
+-- FROM stream 
+-- WHERE country NOT NULL
+-- GROUP BY country;
+
+/*Select list of unique players/sources & their number of streamers*/
+-- SELECT DISTINCT(player), COUNT(device_id) as 'Number of Streamers'
+-- FROM stream
+-- GROUP BY player
+-- LIMIT 20;
+
+/*Create a column named genre and group the games into genres*/
+-- SELECT game,
+--  CASE
+--   WHEN game = 'Dota 2'
+--       THEN 'MOBA'
+--   WHEN game = 'League of Legends' 
+--       THEN 'MOBA'
+--   WHEN game = 'Heroes of the Storm'
+--       THEN 'MOBA'
+--     WHEN game = 'Counter-Strike: Global Offensive'
+--       THEN 'FPS'
+--     WHEN game = 'DayZ'
+--       THEN 'Survival'
+--     WHEN game = 'ARK: Survival Evolved'
+--       THEN 'Survival'
+--   ELSE 'Other'
+--   END AS 'genre',
+--   COUNT(*) as 'Streamers Per Genre'
+-- FROM stream
+-- GROUP BY 1
+-- ORDER BY 3 DESC;
+
+/*Query time format*/
+-- SELECT time
+-- FROM stream 
+-- LIMIT 10;
+
+/*Return the number of seconds in time column*/
+-- SELECT time, 
+--   strftime('%S',time)
+-- FROM stream
+-- GROUP BY 1 
+-- LIMIT 20;
+
+/*Return the hours of time column, view count for each hour, by country USA*/
+-- SELECT strftime('%H', time) as 'Hours',
+--   COUNT(*) as 'Streamers in US'
+-- FROM stream
+-- WHERE country LIKE '%US%'
+-- GROUP BY 1;
+
+/*Join stream table and chat table on column device_id*/
+-- SELECT *
+-- FROM stream
+-- JOIN chat
+--   ON stream.device_id = chat.device_id;
